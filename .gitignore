@@ -1,0 +1,33 @@
+# Local .terraform directories
+**/.terraform/*
+!.terraform/*.hcl
+
+# Terragrunt cache
+**/.terragrunt-cache/
+
+# Terraform/Terragrunt state files
+*.tfstate
+*.tfstate.backup
+
+# Crash logs
+crash.log
+
+# Override files
+terraform.tfvars
+terraform.tfvars.json
+*.auto.tfvars
+*.auto.tfvars.json
+
+# Sensitive CLI credentials
+.terraformrc
+.terragrunt
+
+# IDE/editor files
+.vscode/
+.idea/
+*.swp
+*.bak
+
+# OS files
+.DS_Store
+Thumbs.db
