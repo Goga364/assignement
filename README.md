@@ -27,21 +27,25 @@ This repository contains Terraform and Terragrunt code to deploy a production-re
 - kubectl installed
 - Helm installed
 
-### 2. Clone and Initialize
+### 2. Clone and Deploy the Infrastructure
 
 ```bash
 git clone https://github.com/Goga364/assignement.git
-cd live/dev
-terragrunt run-all init
+cd assignement/live/dev/vpc
+terragrunt init && terragrunt apply -auto-approve
+
+cd ../eks
+terragrunt init && terragrunt apply -auto-approve
+
+cd ../karpenter
+terragrunt init && terragrunt apply -auto-approve
+
 ```
 
-### 3. Deploy the Infrastructure
-
-```bash
-terragrunt run-all apply
-```
 
 > Deploying all resources takes ~20–25 minutes.
+> `terragrunt run-all` is **not recommended** on first apply due to dependency outputs — follow the ordered steps above instead.
+
 
 ---
 
