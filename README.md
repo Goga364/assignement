@@ -171,7 +171,7 @@ Each environment has its own **VPC** with the following structure:
 
 ## 6. High-Level Architecture Diagram
 
-![Innovate Inc AWS Architecture](infrastructure.png)
+![Innovate Inc AWS Architecture](Infrastructure.png)
 
 ---
 
