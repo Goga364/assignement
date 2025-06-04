@@ -93,3 +93,82 @@ DevOps Engineer
 ## Disclaimer
 
 This is a proof-of-concept setup and should be audited before production use.
+
+
+# Innovate Inc. – AWS Cloud Infrastructure Architecture
+
+This document outlines the cloud infrastructure design for Innovate Inc.'s web application, deployed on AWS using managed Kubernetes and aligned with best practices for security, scalability, and cost-efficiency.
+
+---
+
+## 1. Cloud Environment Structure
+
+We recommend **three AWS accounts** under AWS Organizations for clear separation and cost tracking:
+- **Development** – sandboxed for testing and internal experimentation
+- **Staging** – mirrors production for validation before release
+- **Production** – hosts the live application, with restricted access
+
+---
+
+## 2. Network Design
+
+### VPC Design
+Each environment has its own **VPC** with the following structure:
+- **Public Subnets** – Host ALB and NAT Gateways
+- **Private Subnets** – Host EKS worker nodes
+- **Database Subnets** – Host RDS PostgreSQL (private, no internet access)
+
+### Security Measures
+- **Internet Gateway (IGW)** attached to public subnets for ALB/NAT access
+- **NAT Gateway** in each public subnet for private subnet egress
+- **VPC Security Groups**: Strict ingress/egress for ALB, EKS, RDS
+- **AWS Secrets Manager**: Centralized secure storage of sensitive data
+- **WAF** (optional) for ALB/CloudFront protection
+
+---
+
+## 3. Compute Platform – Amazon EKS
+
+### Kubernetes Management
+- **Amazon EKS** manages cluster control plane
+- **Flask REST API** runs as a Kubernetes deployment
+- **Separate node groups** (e.g., backend vs. ArgoCD workloads)
+- **Ingress Controller** exposes APIs securely via ALB
+
+### Scaling and Allocation
+- **Cluster Autoscaler** or **Karpenter** for dynamic scaling
+- Pod-level resource requests/limits and **HPA**
+
+### CI/CD Strategy
+- **GitHub Actions**: Code build, test, and push Docker images to **ECR**
+- **ArgoCD**: GitOps deployment model pulling manifests from GitHub to EKS
+
+---
+
+## 4. Frontend Hosting – SPA (React)
+
+- Static React frontend is deployed to **S3**
+- Delivered via **CloudFront CDN** for performance and edge caching
+- DNS managed by **Route 53**
+
+---
+
+## 5. Database – PostgreSQL
+
+### Service
+- **Amazon RDS for PostgreSQL** in database subnets
+
+### High Availability & Backup
+- **Multi-AZ deployment** enabled
+- Daily automated backups + PITR
+- Optional **AWS Backup** integration for cross-region snapshots
+
+---
+
+## 6. High-Level Architecture Diagram
+
+![Innovate Inc AWS Architecture](infrastructure.png)
+
+---
+
+This solution ensures Innovate Inc. is prepared for scale, maintains security for sensitive user data, and aligns with modern DevOps practices.
